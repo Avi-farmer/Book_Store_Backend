@@ -12,7 +12,10 @@ const PORT = process.env.PORT || 4000;
 const URI = process.env.MongoDBURI;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://book-store-sigma-red-93.vercel.app",
+  credentials: true, // optional: if you're sending cookies or auth headers
+}));
 
 try {
   await mongoose.connect(URI, {
