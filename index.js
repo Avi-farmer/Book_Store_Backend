@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bookRoute from "./route/book.route.js";
 import userRoute from "./route/user.route.js";
+import orderRoute from "./route/order.route.js"; // Added order route import
 
 dotenv.config(); // FIXED: function call
 
@@ -12,16 +13,10 @@ const PORT = process.env.PORT || 4000;
 const URI = process.env.MongoDBURI;
 
 app.use(express.json());
-app.use(cors({
-  origin: "https://book-store-sigma-red-93.vercel.app",
-  credentials: true, // optional: if you're sending cookies or auth headers
-}));
+app.use(cors());
 
 try {
-  await mongoose.connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(URI);
   console.log("✅ Connected to MongoDB");
 } catch (error) {
   console.error("❌ MongoDB connection error:", error.message);
@@ -31,6 +26,7 @@ try {
 // Routes
 app.use("/book", bookRoute);
 app.use("/user", userRoute);
+app.use("/order", orderRoute); // Added order route
 
 app.get("/", (req, res) => {
   res.json({ activeStatus: true });
